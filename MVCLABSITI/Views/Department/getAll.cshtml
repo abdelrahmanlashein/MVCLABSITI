@@ -1,4 +1,7 @@
 ﻿@model List<Department>
+
+<a href="/Department/Add" class=" btn btn-outline-primary">New</a>
+
 <table class="table">
     <thead>
         <tr>
@@ -7,6 +10,7 @@
             <th scope="col">ManagerName</th>
             <th scope="col">Location</th>
             <th scope="col">Branches</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -18,6 +22,8 @@
                 <td>@d.ManagerName</td>
                 <td>@d.Location</td>
                 <td>@d.Branch</td>
+                <td><a asp-action="Edit" asp-controller="Department" asp-route-id="@d.DeptId" class="btn btn-outline-info">Edit</a></td>
+
             </tr>
         }
     </tbody>

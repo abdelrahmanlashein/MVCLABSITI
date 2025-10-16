@@ -14,6 +14,7 @@ namespace MVCLABSITI.Models
         public string? Email { get; set; }
 
         [ForeignKey(nameof(Department))]
+        [Display(Name = "Department")]
         public int? DeptId { get; set;}
         public Department Department { get; set; }
         public ICollection<Enrollment> Enrolments { get; set;} = new HashSet<Enrollment>();

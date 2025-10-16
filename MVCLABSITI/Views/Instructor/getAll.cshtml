@@ -1,0 +1,35 @@
+﻿@model List<Instructor>
+
+<a href="/Instructor/Add" class=" btn btn-outline-primary">New</a>
+
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">InsId</th>
+            <th scope="col">Name</th>
+            <th scope="col">Age</th>
+            <th scope="col">Salary</th>
+            <th scope="col">Image</th>
+            <th scope="col">HiringDate</th>
+            <th scope="col">Address</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var i in Model)
+        {
+            <tr>
+                <th scope="row">@i.InsId</th>
+                <td>@i.Name</td>
+                <td>@i.Age</td>
+                <td>@i.Salary</td>
+                <td>@i.Image</td>
+                <td>@i.HiringDate</td>
+                <td>@i.Address</td>
+
+                <td><a asp-action="Edit" asp-controller="Instructor" asp-route-id="@i.InsId" class="btn btn-outline-info">Edit</a></td>
+            </tr>
+        }
+    </tbody>
+</table>

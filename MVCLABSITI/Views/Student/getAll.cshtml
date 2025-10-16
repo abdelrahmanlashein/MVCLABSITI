@@ -1,4 +1,9 @@
-﻿<table class="table">
+﻿@model List<Student>
+
+    <a href ="/Student/Add" class=" btn btn-outline-primary">New</a>
+
+
+<table class="table">
     <thead>
         <tr>
             <th scope="col">SSN</th>
@@ -7,6 +12,7 @@
             <th scope="col">Address</th>
             <th scope="col">Image</th>
             <th scope="col">Email</th>
+            <th></th>
         </tr>
     </thead>
     <tbody>
@@ -19,6 +25,7 @@
                 <td>@s.Address</td>
                 <td>@s.Image</td>
                 <td>@s.Email</td>
+                <td><a asp-action = "Edit" asp-controller = "Student" asp-route-id="@s.SSN" class="btn btn-outline-info">Edit</a></td> 
             </tr>
         }
     </tbody>

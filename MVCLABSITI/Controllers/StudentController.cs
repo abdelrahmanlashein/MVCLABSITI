@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MVCLABSITI.Context;
 using MVCLABSITI.Models;
+using System.Reflection.Metadata.Ecma335;
 
 namespace MVCLABSITI.Controllers
 {
@@ -24,12 +25,33 @@ namespace MVCLABSITI.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Add(Student student)
+        public IActionResult AddNew(Student student)
         {
-            db.Students.Add(student);
-            db.SaveChanges();
-            return RedirectToAction("getAll");
+            if (student.Name != null)
+            {
+                db.Students.Add(student);
+                db.SaveChanges();
+                return RedirectToAction("getAll");
+            }
+            return View("Add");
         }
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var student = db.Students.Find (id);
+            var departments = db.Departments.ToList();
+            ViewBag.departments = departments;
+            return View(student);
+        }
+        [HttpPost]
+        public IActionResult Edit(Student student)
+        {
+                db.Students.Update(student);
+                db.SaveChanges();
+                return RedirectToAction("getAll");
+        }
+
+
 
 
     }

@@ -29,9 +29,26 @@ namespace MVCLABSITI.Controllers
             return View();
         }
         [HttpPost]
-        public IActionResult Add(Department department)
+        public IActionResult AddNew(Department department)
         {
-            db.Departments.Add(department);
+            if (department.Name != null)
+            {
+                db.Departments.Add(department);
+                db.SaveChanges();
+                return RedirectToAction("getAll");
+            }
+            return View("Add");
+        }
+        [HttpGet]
+        public IActionResult Edit(int id)
+        {
+            var department = db.Departments.Find(id);
+            return View(department);
+        }
+        [HttpPost]
+        public IActionResult Edit(Department department)
+        {
+            db.Departments.Update(department);
             db.SaveChanges();
             return RedirectToAction("getAll");
         }
