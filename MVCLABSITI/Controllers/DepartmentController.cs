@@ -37,7 +37,7 @@ namespace MVCLABSITI.Controllers
                 db.SaveChanges();
                 return RedirectToAction("getAll");
             }
-            return View("Add");
+            return View("Add" , department);
         }
         [HttpGet]
         public IActionResult Edit(int id)
@@ -52,6 +52,12 @@ namespace MVCLABSITI.Controllers
             db.SaveChanges();
             return RedirectToAction("getAll");
         }
-
+        public IActionResult Delete(int id) 
+        {
+            var department = db.Departments.Find(id);
+            db.Departments.Remove(department);
+            db.SaveChanges();
+            return RedirectToAction("getAll");
+        }
     }
 }

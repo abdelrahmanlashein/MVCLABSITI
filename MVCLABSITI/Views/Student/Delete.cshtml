@@ -1,0 +1,5 @@
+﻿@model Student
+<form asp-action="Delete" asp-route-id="@Model.SSN" method="post">
+    <input type="hidden" asp-for="SSN" />
+    <button type="submit" class="btn btn-danger"> Delete </button>
+</form>

@@ -23,7 +23,7 @@ namespace MVCLABSITI
             app.MapStaticAssets();
             app.MapControllerRoute(
                 name: "default",
-                pattern: "{controller=Home}/{action=Index}/{id?}") //routing => 3 segments
+                pattern: "{controller=Student}/{action=getAll}/{id?}") //routing => 3 segments
                 .WithStaticAssets();
 
             app.Run();

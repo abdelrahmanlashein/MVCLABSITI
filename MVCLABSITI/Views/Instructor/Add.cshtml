@@ -1,34 +1,8 @@
 ﻿@model Instructor
 
 <form action="/Instructor/AddNew" method="post">
-    <div class="mb-3">
-        <label asp-for="Name"></label>
-        <input asp-for="Name" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label asp-for="Age"></label>
-        <input asp-for="Age" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label asp-for="Salary"></label>
-        <input asp-for="Salary" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label asp-for="Image"></label>
-        <input asp-for="Image" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label asp-for="HiringDate"></label>
-        <input asp-for="HiringDate" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label asp-for="Address"></label>
-        <input asp-for="Address" class="form-control" />
-    </div>
-    <div class="mb-3">
-        <label asp-for="DeptId"></label>
-        <input asp-for="DeptId" class="form-control" />
-    </div>
+    @* asp-action="AddNew" asp-controller="Instructor"   by tag helper *@
+    <partial name="_AddEditPartialView" />
     <button type="submit" class="btn btn-primary">Add Instructor</button>
     <a href="/Instructor/GetAll" class="btn btn-secondary ms-2">Cancel</a>
 </form>

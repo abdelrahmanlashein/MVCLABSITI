@@ -1,27 +1,7 @@
 ﻿@model Department
 
 <form action="/Department/AddNew" method="post">
-
-    
-    <div class="mb-3">
-        <label for="name" class="form-label">Department Name</label>
-        <input type="text" name="Name" class="form-control" id="name">
-    </div>
-
-    <div class="mb-3">
-        <label for="manager" class="form-label">Manager</label>
-        <input type="text" name="ManagerName" class="form-control" id="manager">
-    </div>
-
-    <div class="mb-3">
-        <label for="branches" class="form-label">Branches</label>
-        <input type="text" name="Branches" class="form-control" id="branches">
-    </div>
-    <div class="mb-3">
-        <label for="branches" class="form-label">Location</label>
-        <input type="text" name="Location" class="form-control" id="branches">
-    </div>
-
+    <partial name="_AddEditPartialView" />
     <button type="submit" class="btn btn-primary">Add Department</button>
     <a href="/Department/GetAll" class="btn btn-secondary ms-2">Cancel</a>
 </form>

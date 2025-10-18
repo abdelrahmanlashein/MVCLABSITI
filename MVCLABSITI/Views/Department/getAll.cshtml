@@ -23,8 +23,15 @@
                 <td>@d.Location</td>
                 <td>@d.Branch</td>
                 <td><a asp-action="Edit" asp-controller="Department" asp-route-id="@d.DeptId" class="btn btn-outline-info">Edit</a></td>
+                <td><a asp-action="Delete" asp-controller="Department" asp-route-id="@d.DeptId" class="btn btn-outline-danger">Delete</a></td>
 
             </tr>
         }
     </tbody>
 </table>
+@section Header {
+    <h2>Departments</h2>
+}
+@section Footer {
+    <p>ProximaEd</p>
+}

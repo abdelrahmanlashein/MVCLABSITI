@@ -1,31 +1,9 @@
 ﻿@model Student
-<form action="/Student/AddNew" method="post">
-
-    <div class="mb-3">
-        <label for="name" class="form-label">Name</label>
-        <input type="text" name="Name" class="form-control" id="name">
-    </div>
-    <div class="mb-3">
-        <label for="age" class="form-label">Age</label>
-        <input type="number" name="Age" class="form-control" id="age">
-    </div>
-    <div class="mb-3">
-        <label for="address" class="form-label">Address</label>
-        <input type="text" name="Address" class="form-control" id="address">
-    </div>
-    <div class="mb-3">
-        <label for="image" class="form-label">Image</label>
-        <input type="text" name="Image" class="form-control" id="image">
-    </div>
-    <div class="mb-3">
-        <label for="email" class="form-label">Email</label>
-        <input type="email" name="Email" class="form-control" id="email" aria-describedby="emailHelp" >
-        <div id="emailHelp" class="form-text">
-    </div>
-    <div class="mb-3">
-        <label for="deptid" class="form-label">DeptId</label>
-        <input type="text" name="DeptId" class="form-control" id="deptid">
-    </div>
+<form action="/Student/AddNew" method="post">  
+    @* method post has body recived data at form not in quiry str in url  *@
+    <partial name="_AddEditFormPartialView" />
     <button type="submit" class="btn btn-primary">Add Student</button>
-    <a href="/Student/GetAll" class="btn btn-secondary ms-2">Cancel</a>
+    <a href="/Student/GetAll" class="btn btn-secondary ms-2">BacktoList</a>
 </form>
+
+@* @Html.ActionLink("Back to List", "GetAll", "Student") *@

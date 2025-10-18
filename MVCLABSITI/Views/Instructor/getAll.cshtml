@@ -27,9 +27,15 @@
                 <td>@i.Image</td>
                 <td>@i.HiringDate</td>
                 <td>@i.Address</td>
-
                 <td><a asp-action="Edit" asp-controller="Instructor" asp-route-id="@i.InsId" class="btn btn-outline-info">Edit</a></td>
+                <td><a asp-action="Delete" asp-controller="Instructor" asp-route-id="@i.InsId" class="btn btn-outline-danger">Delete</a></td>
             </tr>
         }
     </tbody>
 </table>
+@section Header {
+    <h2>Instructors</h2>
+}
+@section Footer {
+    <p>ProximaEd</p>
+}

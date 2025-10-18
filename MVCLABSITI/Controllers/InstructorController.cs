@@ -49,5 +49,12 @@ namespace MVCLABSITI.Controllers
             db.SaveChanges();
             return RedirectToAction("getAll");
         }
+        public IActionResult Delete(int id)
+        {
+            var instructor = db.Instructors.Find(id);
+            db.Instructors.Remove(instructor);
+            db.SaveChanges();
+            return RedirectToAction("getAll");
+        }   
     }
 }

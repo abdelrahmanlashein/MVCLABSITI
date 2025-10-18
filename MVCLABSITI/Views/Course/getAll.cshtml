@@ -1,0 +1,37 @@
+﻿@model List<Course>
+
+<a href="/Course/Add" class=" btn btn-outline-primary">New</a>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">CourseId</th>
+            <th scope="col">Name</th>
+            <th scope="col">Topic</th>
+            <th scope="col">Degree</th>
+            <th scope="col">MinDegree</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var c in Model)
+        {
+            <tr>
+                <th scope="row">@c.CourseId</th>
+                <td>@c.Name</td>
+                <td>@c.Topic</td>
+                <td>@c.Degree</td>
+                <td>@c.MinDegree</td>
+                <td><a asp-action="Edit" asp-controller="Course" asp-route-id="@c.CourseId" class="btn btn-outline-info">Edit</a></td>
+                <td><a asp-action="Delete" asp-controller="Course" asp-route-id="@c.CourseId" class="btn btn-outline-danger">Delete</a></td>
+
+            </tr>
+        }
+    </tbody>
+</table>
+@section Header {
+    <h2>Courses</h2>
+}
+@section Footer {
+    <p>ProximaEd</p>
+}
