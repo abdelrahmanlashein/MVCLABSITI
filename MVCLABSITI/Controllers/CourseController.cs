@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Microsoft.Identity.Client;
 using MVCLABSITI.Context;
 using MVCLABSITI.Models;
 
@@ -30,7 +31,7 @@ namespace MVCLABSITI.Controllers
         [HttpPost]
         public IActionResult AddNew(Course course)
         {
-            if (course.Name != null)
+            if (ModelState.IsValid)
             {
                 db.Courses.Add(course);
                 db.SaveChanges();
@@ -47,9 +48,14 @@ namespace MVCLABSITI.Controllers
         [HttpPost]
         public IActionResult Edit(Course course)
         {
-            db.Courses.Update(course);
-            db.SaveChanges();
-            return RedirectToAction("getAll");
+            if (ModelState.IsValid)
+            {
+                db.Courses.Update(course);
+                db.SaveChanges();
+                return RedirectToAction("getAll");
+            }
+            return View(course);
+            
         }
 
         public IActionResult Delete(int id)
@@ -58,6 +64,19 @@ namespace MVCLABSITI.Controllers
             db.Courses.Remove(course);
             db.SaveChanges();
             return RedirectToAction("getAll");
+        }
+        public IActionResult UniqueName(string name)
+        {
+            var course = db.Courses.FirstOrDefault(c => c.Name == name);
+            if (course != null)
+            {
+                return Json(false);
+            }
+            else
+            {
+                return Json(true);
+            }
+            
         }
     }
 }

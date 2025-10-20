@@ -31,7 +31,7 @@ namespace MVCLABSITI.Controllers
         [HttpPost]
         public IActionResult AddNew(Department department)
         {
-            if (department.Name != null)
+            if (ModelState.IsValid)
             {
                 db.Departments.Add(department);
                 db.SaveChanges();
@@ -48,9 +48,13 @@ namespace MVCLABSITI.Controllers
         [HttpPost]
         public IActionResult Edit(Department department)
         {
-            db.Departments.Update(department);
-            db.SaveChanges();
-            return RedirectToAction("getAll");
+            if (ModelState.IsValid)
+            {
+                db.Departments.Update(department);
+                db.SaveChanges();
+                return RedirectToAction("getAll");
+            }
+            return View(department);
         }
         public IActionResult Delete(int id) 
         {

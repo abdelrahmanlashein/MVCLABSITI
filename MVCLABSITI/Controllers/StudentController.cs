@@ -31,12 +31,21 @@ namespace MVCLABSITI.Controllers
         [HttpPost]  // verb post to receive data from form not from url
         public IActionResult AddNew(Student student)
         {
-            if (student.Name != null)
+            if (student.DeptId != 0)
             {
-                db.Students.Add(student);
-                db.SaveChanges();
-                return RedirectToAction("getAll");
+                if (ModelState.IsValid)
+                {
+                    db.Students.Add(student);
+                    db.SaveChanges();
+                    return RedirectToAction("getAll");
+                }
+
             }
+            else
+            {
+                ModelState.AddModelError("DeptId", "Please select Department");
+            }
+
             var departments = db.Departments.ToList(); // adeha ll action tany leh msh fahem?????????
             ViewBag.departments = departments;
             return View("Add", student);
@@ -52,9 +61,20 @@ namespace MVCLABSITI.Controllers
         [HttpPost]
         public IActionResult Edit(Student student)
         {
-            db.Students.Update(student);
-            db.SaveChanges();
-            return RedirectToAction("getAll");
+            if(student.DeptId != 0)
+            {
+                if (ModelState.IsValid)
+               {
+                        db.Students.Update(student);
+                        db.SaveChanges();
+                        return RedirectToAction("getAll");
+               }
+               else
+                {
+                    ModelState.AddModelError("DeptId", "Please select Department");
+                }
+            }
+            return View(student);
         }
 
         public IActionResult Delete(int id)

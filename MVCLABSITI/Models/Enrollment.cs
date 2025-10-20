@@ -1,9 +1,11 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace MVCLABSITI.Models
 {
     public class Enrollment
     {
+        [Range(0,100, ErrorMessage = "Grade must be btw [0:100]")]
         public decimal Grade { get; set;}
 
         [ForeignKey(nameof(Student))]

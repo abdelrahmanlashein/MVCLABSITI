@@ -21,22 +21,34 @@ namespace MVCLABSITI.Controllers
         [HttpGet]
         public IActionResult Add()
         {
+            var departments = db.Departments.ToList();
+            ViewBag.departments = departments;
             return View();
         }
         [HttpPost]
         public IActionResult AddNew(Instructor instructor)
-        {
-            if (instructor.Name != null)
+        {   if (instructor.DeptId != 0)
             {
-                db.Instructors.Add(instructor);
-                db.SaveChanges();
-                return RedirectToAction("getAll");
+                if (ModelState.IsValid)
+                {
+                    db.Instructors.Add(instructor);
+                    db.SaveChanges();
+                    return RedirectToAction("getAll");
+                }
             }
+            else
+            {
+                ModelState.AddModelError("DeptId", "Please select Department");
+            }
+            
+            var departments = db.Departments.ToList();
+            ViewBag.departments = departments;
             return View("Add");
         }
         [HttpGet]
         public IActionResult Edit(int id)
         {
+
             var instructor = db.Instructors.Find(id);
             var departments = db.Departments.ToList();
             ViewBag.departments = departments;
@@ -45,9 +57,21 @@ namespace MVCLABSITI.Controllers
         [HttpPost]
         public IActionResult Edit(Instructor instructor)
         {
-            db.Instructors.Update(instructor);
-            db.SaveChanges();
-            return RedirectToAction("getAll");
+            if (instructor.DeptId != 0)
+            {
+                if (ModelState.IsValid)
+                {
+                    db.Instructors.Update(instructor);
+                    db.SaveChanges();
+                    return RedirectToAction("getAll");
+                }
+            }
+            else 
+            {
+                ModelState.AddModelError("DeptId", "Please select Department");
+            }
+           
+            return View(instructor);
         }
         public IActionResult Delete(int id)
         {

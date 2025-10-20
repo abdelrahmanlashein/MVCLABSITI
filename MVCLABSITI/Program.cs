@@ -1,3 +1,6 @@
+using MVCLABSITI.MiddleWares;
+using Serilog;
+
 namespace MVCLABSITI
 {
     public class Program
@@ -5,11 +8,25 @@ namespace MVCLABSITI
         public static void Main(string[] args)
         {
             var builder = WebApplication.CreateBuilder(args);
+            #region using Serilog;
+            // Create Serilog logger
+            Log.Logger = new LoggerConfiguration()
+                .MinimumLevel.Information()
+                .WriteTo.Console()
+                .WriteTo.File(
+                    path: "logs/app-log-.txt",
+                    rollingInterval: RollingInterval.Day,
+                    outputTemplate: "{Timestamp:yyyy-MM-dd HH:mm:ss} [{Level}] {Message}{NewLine}{Exception}"
+                )
+                .CreateLogger();
+            #endregion
+
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
 
-            var app = builder.Build();
+            var app = builder.Build();        //custome middleware
+            app.UseMiddleware<SerilogMiddleware>();
 
             // Configure the HTTP request pipeline.
             if (!app.Environment.IsDevelopment())

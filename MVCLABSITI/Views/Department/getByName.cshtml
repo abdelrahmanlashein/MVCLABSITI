@@ -1,9 +1,82 @@
 ﻿@model Department
-<div class="card" style="width: 18rem;">
+@* <div class="card" style="width: 18rem;">
     <img class="card-img-top" src="..." alt="Card image cap">
     <div class="card-body">
-        <h5 class="card-title">@Model.DeptId</h5>
+        <h5 class="card-title">@Model.Name</h5>
         <p class="card-text">@Model.ManagerName</p>
         <a href="#" class="btn btn-primary">Go somewhere</a>
     </div>
+</div> *@
+
+<h2>Search Department by Name</h2>
+
+<div class="mb-4">
+    <form action="/Department/GetByName" method="get" class="row g-3">
+        <div class="col-md-8">
+            <input type="text" name="name" class="form-control"
+                   placeholder="Enter department name" required>
+        </div>
+        <div class="col-md-4">
+            <button type="submit" class="btn btn-primary">Search</button>
+            <a href="/Department/GetAll" class="btn btn-secondary">Back to List</a>
+        </div>
+    </form>
 </div>
+
+@if (Model != null)
+{
+    <div class="card">
+        <div class="card-header bg-success text-white">
+            <h4>Department Found</h4>
+        </div>
+        <div class="card-body">
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <strong>Department ID:</strong>
+                </div>
+                <div class="col-md-9">
+                    @Model.DeptId
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <strong>Department Name:</strong>
+                </div>
+                <div class="col-md-9">
+                    @Model.Name
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <strong>Manager:</strong>
+                </div>
+                <div class="col-md-9">
+                    @Model.ManagerName
+                </div>
+            </div>
+
+            <div class="row mb-3">
+                <div class="col-md-3">
+                    <strong>Branches:</strong>
+                </div>
+                <div class="col-md-9">
+                    @Model.Branch
+                </div>
+            </div>
+        </div>
+        <div class="card-footer">
+            <a href="/Department/Edit/@Model.DeptId" class="btn btn-warning">Edit</a>
+            <a href="/Department/Delete/@Model.DeptId" class="btn btn-danger">Delete</a>
+            <a href="/Department/GetByName" class="btn btn-secondary">New Search</a>
+        </div>
+    </div>
+}
+else if (ViewContext.HttpContext.Request.Query.ContainsKey("name"))
+{
+    <div class="alert alert-warning">
+        <strong>No department found with the name "@ViewContext.HttpContext.Request.Query["name"]"</strong>
+        <br>Please try searching with a different name.
+    </div>
+} 
