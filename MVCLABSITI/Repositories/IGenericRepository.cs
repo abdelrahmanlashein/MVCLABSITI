@@ -9,6 +9,6 @@ namespace MVCLABSITI.Repositories
         void Update(T entity);
         void Delete(T entity);
         void Save();
-        string? GetByCondition(Func<object, bool> value);
+        T GetByCondition(Func<T, bool> predicate);
     }
 }

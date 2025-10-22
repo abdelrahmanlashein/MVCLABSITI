@@ -34,8 +34,6 @@ namespace MVCLABSITI.Repositories
             _dbSet.Update(entity);
         }
 
-       
-
         public void Save()
         {
             _context.SaveChanges();
@@ -43,13 +41,20 @@ namespace MVCLABSITI.Repositories
 
         public void Delete(T entity)
         {
-            _dbSet.Remove(entity);
+            if (entity != null)
+            {
+                _dbSet.Remove(entity);
+            }
+        }
+
+        public T GetByCondition(Func<T, bool> predicate)
+        {
+            return _dbSet.AsEnumerable().FirstOrDefault(predicate);
         }
 
         public string? GetByCondition(Func<object, bool> value)
         {
-            var result = _dbSet.AsEnumerable().FirstOrDefault(value);
-            return result?.ToString();
+            throw new NotImplementedException();
         }
     }
 }
