@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MVCLABSITI.Context;
+using MVCLABSITI.Filters;
 using MVCLABSITI.Models;
 
 
@@ -8,6 +9,7 @@ namespace MVCLABSITI.Controllers
     public class DepartmentController : Controller
     {
         SchoolContext db = new SchoolContext();
+        //[Route("Department/All")]
         public IActionResult getAll()
         {
             var departments = db.Departments.ToList();
@@ -62,6 +64,26 @@ namespace MVCLABSITI.Controllers
             db.Departments.Remove(department);
             db.SaveChanges();
             return RedirectToAction("getAll");
+        }
+        [HttpGet]
+        public IActionResult AddV2()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [LocationValidationFilter]
+        public IActionResult AddV2(Department department)
+        {
+            if (ModelState.IsValid)
+            {
+                department.DeptId = 0;
+                db.Departments.Add(department);
+                db.SaveChanges();
+                return RedirectToAction("GetAll");
+            }
+
+            return View(department);
         }
     }
 }

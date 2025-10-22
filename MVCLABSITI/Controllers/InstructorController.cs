@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using MVCLABSITI.Context;
+using MVCLABSITI.Filters;
 using MVCLABSITI.Models;
 
 namespace MVCLABSITI.Controllers
@@ -7,6 +8,8 @@ namespace MVCLABSITI.Controllers
     public class InstructorController : Controller
     {
         SchoolContext db = new SchoolContext();
+        //[Route("Instructor/All")]
+
         public IActionResult getAll()
         {
             var instructors = db.Instructors.ToList();
@@ -55,6 +58,7 @@ namespace MVCLABSITI.Controllers
             return View(instructor);
         }
         [HttpPost]
+        [EditInstructorResultFilter]
         public IActionResult Edit(Instructor instructor)
         {
             if (instructor.DeptId != 0)

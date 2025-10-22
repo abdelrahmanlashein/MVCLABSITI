@@ -1,3 +1,4 @@
+using MVCLABSITI.Filters;
 using MVCLABSITI.MiddleWares;
 using Serilog;
 
@@ -24,6 +25,10 @@ namespace MVCLABSITI
 
             // Add services to the container.
             builder.Services.AddControllersWithViews();
+            builder.Services.AddControllersWithViews(op =>
+            {
+                op.Filters.Add<ExceptionHandleFilter>();
+            });
 
             var app = builder.Build();        //custome middleware
             app.UseMiddleware<SerilogMiddleware>();

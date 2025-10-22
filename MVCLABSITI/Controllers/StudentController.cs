@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVCLABSITI.Context;
+using MVCLABSITI.Filters;
 using MVCLABSITI.Models;
 using MVCLABSITI.ViewModels;
 using System.Reflection.Metadata.Ecma335;
@@ -10,12 +12,14 @@ namespace MVCLABSITI.Controllers
     public class StudentController : Controller
     {
         SchoolContext db = new SchoolContext();
+        [AuthorizeFilter(false)] 
+        //[Route("Student/All")]
         public IActionResult getAll()
         {
             var students = db.Students.ToList();
             return View(students);
         }
-
+        
         public IActionResult getById(int id)
         {
             var student = db.Students.Find(id);

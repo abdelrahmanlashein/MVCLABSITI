@@ -8,6 +8,7 @@ namespace MVCLABSITI.Controllers
     public class CourseController : Controller
     {
         SchoolContext db = new SchoolContext();
+        //[Route("Course/All")]
         public IActionResult getAll()
         {
             var courses = db.Courses.ToList();

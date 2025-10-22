@@ -19,7 +19,8 @@ namespace MVCLABSITI.Models
         [RegularExpression("[a-zA-Z]{3,20}",ErrorMessage = "must be only letters btw [3,20]")]
         public string? ManagerName { get; set; }
         [MinLength(3, ErrorMessage = "Name must btw 3:50"), MaxLength(50, ErrorMessage = "Name must btw 3:50")]
-        public string? Location { get; set; }
+        [Required]
+        public string Location { get; set; }
         [MinLength(3, ErrorMessage = "Name must btw 3:15"), MaxLength(15, ErrorMessage = "Name must btw 3:15")]
         public Branches Branch { get; set; }
 
