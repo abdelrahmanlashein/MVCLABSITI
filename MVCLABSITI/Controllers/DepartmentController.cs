@@ -1,70 +1,82 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MVCLABSITI.Context;
 using MVCLABSITI.Filters;
 using MVCLABSITI.Models;
-
+using MVCLABSITI.Repositories;
 
 namespace MVCLABSITI.Controllers
 {
     public class DepartmentController : Controller
     {
-        SchoolContext db = new SchoolContext();
-        //[Route("Department/All")]
+        private readonly IGenericRepository<Department> _departmentRepo;
+
+        public DepartmentController(IGenericRepository<Department> departmentRepo)
+        {
+            _departmentRepo = departmentRepo;
+        }
+
         public IActionResult getAll()
         {
-            var departments = db.Departments.ToList();
+            var departments = _departmentRepo.GetAll();
             return View(departments);
         }
+
         public IActionResult getById(int id)
         {
-            var department = db.Departments.Find(id);
+            var department = _departmentRepo.GetById(id);
             return View(department);
         }
-        public IActionResult getByName(string name) 
+
+        public IActionResult getByName(string name)
         {
-            var department = db.Departments.FirstOrDefault(d => d.Name == name);
+            var department = _departmentRepo.GetAll().FirstOrDefault(d => d.Name == name);
             return View(department);
         }
+
         [HttpGet]
         public IActionResult Add()
         {
             return View();
         }
+
         [HttpPost]
         public IActionResult AddNew(Department department)
         {
             if (ModelState.IsValid)
             {
-                db.Departments.Add(department);
-                db.SaveChanges();
+                _departmentRepo.Add(department);
+                _departmentRepo.Save();
                 return RedirectToAction("getAll");
             }
-            return View("Add" , department);
+            return View("Add", department);
         }
+
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var department = db.Departments.Find(id);
+            var department = _departmentRepo.GetById(id);
             return View(department);
         }
+
         [HttpPost]
         public IActionResult Edit(Department department)
         {
             if (ModelState.IsValid)
             {
-                db.Departments.Update(department);
-                db.SaveChanges();
+                _departmentRepo.Update(department);
+                _departmentRepo.Save();
                 return RedirectToAction("getAll");
             }
             return View(department);
         }
-        public IActionResult Delete(int id) 
+
+        public IActionResult Delete(int id)
         {
-            var department = db.Departments.Find(id);
-            db.Departments.Remove(department);
-            db.SaveChanges();
+            var department = _departmentRepo.GetById(id);
+            _departmentRepo.Delete(department);
+            _departmentRepo.Save();
             return RedirectToAction("getAll");
         }
+
         [HttpGet]
         public IActionResult AddV2()
         {
@@ -78,11 +90,10 @@ namespace MVCLABSITI.Controllers
             if (ModelState.IsValid)
             {
                 department.DeptId = 0;
-                db.Departments.Add(department);
-                db.SaveChanges();
-                return RedirectToAction("GetAll");
+                _departmentRepo.Add(department);
+                _departmentRepo.Save();
+                return RedirectToAction("getAll");
             }
-
             return View(department);
         }
     }

@@ -13,7 +13,7 @@ namespace MVCLABSITI.Filters
         public void OnAuthorization(AuthorizationFilterContext context)
         {
             if(!_isAuthorized)
- {
+            {
                 context.Result = new ViewResult()
                 {
                     ViewName = "Unauthorized",

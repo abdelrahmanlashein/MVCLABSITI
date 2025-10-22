@@ -1,5 +1,7 @@
+using MVCLABSITI.Context;
 using MVCLABSITI.Filters;
 using MVCLABSITI.MiddleWares;
+using MVCLABSITI.Repositories;
 using Serilog;
 
 namespace MVCLABSITI
@@ -29,6 +31,9 @@ namespace MVCLABSITI
             {
                 op.Filters.Add<ExceptionHandleFilter>();
             });
+            builder.Services.AddScoped(typeof(IGenericRepository<>), typeof(GenericRepository<>));
+            builder.Services.AddScoped<SchoolContext>();
+
 
             var app = builder.Build();        //custome middleware
             app.UseMiddleware<SerilogMiddleware>();

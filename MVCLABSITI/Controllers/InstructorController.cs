@@ -1,41 +1,52 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using MVCLABSITI.Context;
 using MVCLABSITI.Filters;
 using MVCLABSITI.Models;
+using MVCLABSITI.Repositories;
 
 namespace MVCLABSITI.Controllers
 {
     public class InstructorController : Controller
     {
-        SchoolContext db = new SchoolContext();
-        //[Route("Instructor/All")]
+        private readonly IGenericRepository<Instructor> _instructorRepo;
+        private readonly IGenericRepository<Department> _departmentRepo;
+
+        public InstructorController(
+            IGenericRepository<Instructor> instructorRepo,
+            IGenericRepository<Department> departmentRepo)
+        {
+            _instructorRepo = instructorRepo;
+            _departmentRepo = departmentRepo;
+        }
 
         public IActionResult getAll()
         {
-            var instructors = db.Instructors.ToList();
+            var instructors = _instructorRepo.GetAll();
             return View(instructors);
         }
 
         public IActionResult getById(int id)
         {
-            var instructors = db.Students.Find(id);
-            return View(instructors);
+            var instructor = _instructorRepo.GetById(id);
+            return View(instructor);
         }
+
         [HttpGet]
         public IActionResult Add()
         {
-            var departments = db.Departments.ToList();
+            var departments = _departmentRepo.GetAll();
             ViewBag.departments = departments;
             return View();
         }
+
         [HttpPost]
         public IActionResult AddNew(Instructor instructor)
-        {   if (instructor.DeptId != 0)
+        {
+            if (instructor.DeptId != 0)
             {
                 if (ModelState.IsValid)
                 {
-                    db.Instructors.Add(instructor);
-                    db.SaveChanges();
+                    _instructorRepo.Add(instructor);
+                    _instructorRepo.Save();
                     return RedirectToAction("getAll");
                 }
             }
@@ -43,20 +54,21 @@ namespace MVCLABSITI.Controllers
             {
                 ModelState.AddModelError("DeptId", "Please select Department");
             }
-            
-            var departments = db.Departments.ToList();
+
+            var departments = _departmentRepo.GetAll();
             ViewBag.departments = departments;
-            return View("Add");
+            return View("Add", instructor);
         }
+
         [HttpGet]
         public IActionResult Edit(int id)
         {
-
-            var instructor = db.Instructors.Find(id);
-            var departments = db.Departments.ToList();
+            var instructor = _instructorRepo.GetById(id);
+            var departments = _departmentRepo.GetAll();
             ViewBag.departments = departments;
             return View(instructor);
         }
+
         [HttpPost]
         [EditInstructorResultFilter]
         public IActionResult Edit(Instructor instructor)
@@ -65,24 +77,28 @@ namespace MVCLABSITI.Controllers
             {
                 if (ModelState.IsValid)
                 {
-                    db.Instructors.Update(instructor);
-                    db.SaveChanges();
+                    _instructorRepo.Update(instructor);
+                    _instructorRepo.Save();
                     return RedirectToAction("getAll");
                 }
             }
-            else 
+            else
             {
                 ModelState.AddModelError("DeptId", "Please select Department");
             }
-           
+
             return View(instructor);
         }
+
         public IActionResult Delete(int id)
         {
-            var instructor = db.Instructors.Find(id);
-            db.Instructors.Remove(instructor);
-            db.SaveChanges();
-            return RedirectToAction("getAll");
-        }   
+            var instructor = _instructorRepo.GetById(id);
+            if (instructor != null)
+            {
+                _instructorRepo.Delete(instructor);
+                _instructorRepo.Save();
+            }
+            return RedirectToAction("getAll"); 
+        }
     }
 }

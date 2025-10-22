@@ -1,79 +1,93 @@
-﻿using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using MVCLABSITI.Context;
 using MVCLABSITI.Filters;
 using MVCLABSITI.Models;
+using MVCLABSITI.Repositories;
 using MVCLABSITI.ViewModels;
-using System.Reflection.Metadata.Ecma335;
 
 namespace MVCLABSITI.Controllers
 {
     public class StudentController : Controller
     {
-        SchoolContext db = new SchoolContext();
-        [AuthorizeFilter(false)] 
-        //[Route("Student/All")]
+        private readonly IGenericRepository<Student> _studentRepo;
+        private readonly IGenericRepository<Department> _departmentRepo;
+        private readonly SchoolContext _context;
+
+        public StudentController(
+            IGenericRepository<Student> studentRepo, 
+            IGenericRepository<Department> departmentRepo,
+            SchoolContext context)
+        {
+            _studentRepo = studentRepo;
+            _departmentRepo = departmentRepo;
+            _context = context;
+        }
+
+        //[AuthorizeFilter(false)]
         public IActionResult getAll()
         {
-            var students = db.Students.ToList();
+            var students = _studentRepo.GetAll();
             return View(students);
         }
-        
+
         public IActionResult getById(int id)
         {
-            var student = db.Students.Find(id);
+            var student = _studentRepo.GetById(id);
             return View(student);
         }
+
         [HttpGet]
         public IActionResult Add()
         {
-            var departments = db.Departments.ToList();
-            ViewBag.departments = departments;   // to make dropdown list in student
+            var departments = _departmentRepo.GetAll();
+            ViewBag.departments = departments;
             return View();
         }
-        [HttpPost]  // verb post to receive data from form not from url
+
+        [HttpPost]
         public IActionResult AddNew(Student student)
         {
             if (student.DeptId != 0)
             {
                 if (ModelState.IsValid)
                 {
-                    db.Students.Add(student);
-                    db.SaveChanges();
+                    _studentRepo.Add(student);
+                    _studentRepo.Save();
                     return RedirectToAction("getAll");
                 }
-
             }
             else
             {
                 ModelState.AddModelError("DeptId", "Please select Department");
             }
-
-            var departments = db.Departments.ToList(); // adeha ll action tany leh msh fahem?????????
+            
+            var departments = _departmentRepo.GetAll();
             ViewBag.departments = departments;
             return View("Add", student);
         }
+
         [HttpGet]
         public IActionResult Edit(int id)
         {
-            var student = db.Students.Find(id);
-            var departments = db.Departments.ToList();
+            var student = _studentRepo.GetById(id);
+            var departments = _departmentRepo.GetAll();
             ViewBag.departments = departments;
             return View(student);
         }
+
         [HttpPost]
         public IActionResult Edit(Student student)
         {
-            if(student.DeptId != 0)
+            if (student.DeptId != 0)
             {
                 if (ModelState.IsValid)
-               {
-                        db.Students.Update(student);
-                        db.SaveChanges();
-                        return RedirectToAction("getAll");
-               }
-               else
+                {
+                    _studentRepo.Update(student);
+                    _studentRepo.Save();
+                    return RedirectToAction("getAll");
+                }
+                else
                 {
                     ModelState.AddModelError("DeptId", "Please select Department");
                 }
@@ -83,31 +97,37 @@ namespace MVCLABSITI.Controllers
 
         public IActionResult Delete(int id)
         {
-            var student = db.Students.Find(id);
-            db.Students.Remove(student);
-            db.SaveChanges();
+            var student = _studentRepo.GetById(id);
+            if (student != null)
+            {
+                _studentRepo.Delete(student);
+                _studentRepo.Save();
+            }
             return RedirectToAction("getAll");
         }
 
         public IActionResult DetailsVM(int id)
         {
-            var student = db.Students
+            var student = _context.Students
                 .Include(s => s.Department)
                 .Include(s => s.Enrollments)
                 .ThenInclude(e => e.Course)
                 .FirstOrDefault(s => s.SSN == id);
+
             if (student == null)
             {
-                return NotFound(); 
+                return NotFound();
             }
-            StudentDetailsViewModel studentVM = new StudentDetailsViewModel();
-            studentVM.StudentId = student.SSN;
-            studentVM.StudentName = student.Name;
-            studentVM.DepartmentName = student.Department.Name;
-            studentVM.Enrollments = student.Enrollments.ToList();
+
+            StudentDetailsViewModel studentVM = new StudentDetailsViewModel
+            {
+                StudentId = student.SSN,
+                StudentName = student.Name,
+                DepartmentName = student.Department.Name,
+                Enrollments = student.Enrollments.ToList()
+            };
 
             return View(studentVM);
         }
-
     }
-    }
+}
